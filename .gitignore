@@ -1,0 +1,16 @@
+# Arquivos de dependências do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+
+# Arquivos de banco de dados e configuração local
+database.json
+initiative.json
+config.json
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
