@@ -148,7 +148,7 @@ async def register(ctx, action: str = None):
             confirmation_msg = await bot.wait_for('message', timeout=30.0, check=check)
             if confirmation_msg.content.lower() == 'sim':
                 del user_data[user_id]
-                save_data(user_data, USER_DATA_FILE) # Passando o caminho do arquivo
+                save_data(user_data, USER_DATA_FILE) 
                 await ctx.send("✅ Seus dados foram removidos com sucesso.")
             else:
                 await ctx.send("❌ Remoção cancelada.")
@@ -504,7 +504,7 @@ def process_general_roll(roll_input: str):
 @bot.command(name="roll")
 async def public_roll(ctx, *, entrada: str):
     """Rola um ou mais dados publicamente."""
-    # CORREÇÃO: Chama a função de rolagem geral
+   
     status, resultado = process_general_roll(entrada)
     if status == "error":
         await ctx.send(f"{ctx.author.mention} {resultado}")
@@ -514,11 +514,11 @@ async def public_roll(ctx, *, entrada: str):
 @bot.command(name="sroll")
 async def secret_roll(ctx, *, entrada: str):
     """Faz uma rolagem 100% secreta, enviando o resultado APENAS na DM."""
-    # Garanta que esta linha está usando a função "process_general_roll" que corrigimos.
+    
     status, resultado = process_general_roll(entrada) 
     
     try:
-        # Apaga a mensagem de comando (ex: "pd.sroll d20")
+        
         await ctx.message.delete()
     except (discord.Forbidden, discord.NotFound):
         pass # Ignora se o bot não tiver permissão para apagar mensagens.
@@ -532,25 +532,17 @@ async def secret_roll(ctx, *, entrada: str):
             pass
     else:
         try:
-            # ESTA É A ÚNICA LINHA QUE ENVIA A MENSAGEM DE SUCESSO.
-            # Ela envia o resultado diretamente para a DM do autor.
             await ctx.author.send(f"**Sua rolagem secreta:**\n{resultado}")
             
-            # A linha que enviava a mensagem pública foi REMOVIDA.
             
         except discord.Forbidden:
             # Se não for possível enviar a DM com o resultado, o bot não fará nada.
             # Isso evita expor no chat público que uma rolagem secreta falhou ao ser enviada.
-            # Você pode adicionar um print no seu console se quiser saber que isso aconteceu.
             print(f"ERRO: Não foi possível enviar DM para o usuário {ctx.author.name}.")
         
 # ========================================================================================
 #                                EXECUÇÃO DO BOT
 # ========================================================================================
-
-# LEMBRE-SE DE REDEFINIR SEU TOKEN E USAR O NOVO AQUI!
-# NUNCA MOSTRE SEU TOKEN PARA NINGUÉM.
-# bot.run("SEU_NOVO_TOKEN_AQUI")
 
 def run_bot():
     # Carrega o token de um arquivo de configuração externo
@@ -566,8 +558,6 @@ def run_bot():
         print("ERRO: Token não encontrado dentro de 'config.json'!")
         return
 
-    # LEMBRE-SE: Seu token nunca deve ser mostrado para ninguém.
-    # O arquivo config.json está listado no .gitignore para não ser enviado ao GitHub.
     bot.run(token)
 
 if __name__ == "__main__":
